@@ -1,16 +1,41 @@
 package com.toyproject.americano.service;
 
+import com.toyproject.americano.dto.UserDTO;
 import com.toyproject.americano.entity.User;
 import com.toyproject.americano.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    @Autowired
-    public UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public User createUser(UserDTO userDTO) {
+        User user = new User(userDTO.getEmail());
+        return userRepository.save(user);
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User updateUser(Long id, UserDTO userDTO) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setEmail(userDTO.getEmail());
+            return userRepository.save(user);
+        }
+        return null;
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }

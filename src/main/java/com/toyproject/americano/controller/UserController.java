@@ -1,25 +1,60 @@
 package com.toyproject.americano.controller;
 
+import com.toyproject.americano.dto.UserDTO;
 import com.toyproject.americano.entity.User;
 import com.toyproject.americano.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService){
-        this.userService = userService;
+    private final UserService userService;
+    @GetMapping("/")
+    public String home() {
+        return "home";
+    }
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+        User user = userService.createUser(userDTO);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        User user = userService.updateUser(id, userDTO);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
