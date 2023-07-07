@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDTO {
+public class UserReq {
     private String email;
 
-    public UserDTO(String email){
+    public UserReq(String email){
         this.email = email;
     }
 }

@@ -1,10 +1,9 @@
 package com.toyproject.americano.controller;
 
-import com.toyproject.americano.dto.UserDTO;
+import com.toyproject.americano.dto.UserReq;
 import com.toyproject.americano.entity.User;
 import com.toyproject.americano.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class UserController {
         return "home";
     }
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
-        User user = userService.createUser(userDTO);
+    public ResponseEntity<User> createUser(@RequestBody UserReq userReq) {
+        User user = userService.createUser(userReq);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
@@ -44,8 +43,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        User user = userService.updateUser(id, userDTO);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserReq userReq) {
+        User user = userService.updateUser(id, userReq);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }

@@ -1,10 +1,10 @@
 package com.toyproject.americano.service;
 
-import com.toyproject.americano.dto.UserDTO;
+import com.toyproject.americano.dto.UserReq;
+import com.toyproject.americano.dto.UserRes;
 import com.toyproject.americano.entity.User;
 import com.toyproject.americano.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    public User createUser(UserDTO userDTO) {
-        User user = new User(userDTO.getEmail());
+    public User createUser(UserReq userReq) {
+        User user = new User();
         return userRepository.save(user);
     }
 
@@ -26,10 +26,10 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    public User updateUser(Long id, UserDTO userDTO) {
+    public User updateUser(Long id, UserReq userReq) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
-            user.setEmail(userDTO.getEmail());
+            user.setEmail(userReq.getEmail());
             return userRepository.save(user);
         }
         return null;
@@ -37,5 +37,13 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    private User convertToEntity(UserReq userReq){
+        return null;
+    }
+
+    private UserRes convertToResponse(User user){
+        return null;
     }
 }
