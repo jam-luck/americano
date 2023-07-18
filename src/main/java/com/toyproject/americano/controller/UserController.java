@@ -1,5 +1,6 @@
 package com.toyproject.americano.controller;
 
+import com.toyproject.americano.client.TestClient;
 import com.toyproject.americano.dto.UserReq;
 import com.toyproject.americano.entity.User;
 import com.toyproject.americano.service.UserService;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TestClient testClient;
     @GetMapping("/")
     public String home() {
         return "home";
@@ -55,5 +57,10 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/feign")
+    public String feignTest(){
+        return testClient.getTest();
     }
 }
